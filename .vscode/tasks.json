@@ -1,0 +1,13 @@
+{
+    "version": "0.1.0",
+    "command": "ntsc",
+    "isShellCommand": true,
+    "showOutput": "silent",
+    "windows": {
+        "command": "ntsc",
+        "isShellCommand": true
+    },
+    "args": ["-p", ".", "-outDir", "./dst"],
+    //"args": ["--module commonjs","${file}"],
+    "problemMatcher": "$tsc"
+}

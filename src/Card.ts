@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///	@file			Card.ts
-///	@brief			トランプカードクラス
+///	@brief			カードクラス
 ///	@author			Yuta Yoshinaga
 ///	@date			2018.05.04
 ///	$Version:		$
@@ -20,18 +20,23 @@ var DEF_CARD_TYPE_SPADE = 1;
 var DEF_CARD_TYPE_CLOVER = 2;
 var DEF_CARD_TYPE_HEART = 3;
 var DEF_CARD_TYPE_DIAMOND = 4;
+var DEF_CARD_TYPE_MIN = DEF_CARD_TYPE_JOKER;
+var DEF_CARD_TYPE_MAX = DEF_CARD_TYPE_DIAMOND;
 
 var DEF_CARD_VALUE_JOKER = 0;
+var DEF_CARD_VALUE_MIN = 0;
+var DEF_CARD_VALUE_MAX = 13;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///	@class		Card
-///	@brief		トランプカードクラス
+///	@brief		カードクラス
 ///
 ////////////////////////////////////////////////////////////////////////////////
 class Card
 {
 	private type: number;										//!< カード種類
 	private value: number;										//!< カード値
+	private drowFlag: boolean;									//!< カード払い出しフラグ
 	private ext: string;										//!< カード拡張情報など(カード別にメッセージを出す場合など)
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +51,7 @@ class Card
 	{
 		this.type = DEF_CARD_TYPE_JOKER;
 		this.value = DEF_CARD_VALUE_JOKER;
+		this.drowFlag = false;
 		this.ext = "";
 	}
 
@@ -60,7 +66,9 @@ class Card
 	////////////////////////////////////////////////////////////////////////////////
 	public setType(type: number): void
 	{
-		this.type = type;
+		if(DEF_CARD_TYPE_MIN <= type && type <= DEF_CARD_TYPE_MAX){
+			this.type = type;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +95,9 @@ class Card
 	////////////////////////////////////////////////////////////////////////////////
 	public setValue(value: number): void
 	{
-		this.value = value;
+		if(DEF_CARD_VALUE_MIN <= value && value <= DEF_CARD_VALUE_MAX){
+			this.value = value;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -105,8 +115,35 @@ class Card
 
 	////////////////////////////////////////////////////////////////////////////////
 	///	@brief			セッター
+	///	@fn				public setValue(drowFlag: boolean): void
+	///	@param[in]		drowFlag: boolean		カード払い出しフラグ
+	///	@return			ありません
+	///	@author			Yuta Yoshinaga
+	///	@date			2018.05.04
+	///
+	////////////////////////////////////////////////////////////////////////////////
+	public setDrowFlag(drowFlag: boolean): void
+	{
+		this.drowFlag = drowFlag;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///	@brief			ゲッター
+	///	@fn				public getDrowFlag(): boolean
+	///	@return			カード払い出しフラグ
+	///	@author			Yuta Yoshinaga
+	///	@date			2018.05.04
+	///
+	////////////////////////////////////////////////////////////////////////////////
+	public getDrowFlag(): boolean
+	{
+		return this.drowFlag;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///	@brief			セッター
 	///	@fn				public setExt(ext: string): void
-	///	@param[in]		ext: string		カード値
+	///	@param[in]		ext: string		カード拡張情報など(カード別にメッセージを出す場合など)
 	///	@return			ありません
 	///	@author			Yuta Yoshinaga
 	///	@date			2018.05.04

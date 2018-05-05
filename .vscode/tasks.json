@@ -7,7 +7,7 @@
         "command": "ntsc",
         "isShellCommand": true
     },
-    "args": ["-p", ".", "-outDir", "./dst"],
+    "args": ["-p", "./src", "-outDir", "./dst"],
     //"args": ["--module commonjs","${file}"],
     "problemMatcher": "$tsc"
 }

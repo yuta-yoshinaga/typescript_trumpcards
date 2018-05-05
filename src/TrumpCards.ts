@@ -106,8 +106,8 @@ class TrumpCards
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	///	@brief			山札初期化
-	///	@fn				private deckInit(): void
+	///	@brief			山札ドローフラグ初期化
+	///	@fn				private deckDrowFlagInit(): void
 	///	@return			ありません
 	///	@author			Yuta Yoshinaga
 	///	@date			2018.05.04

@@ -96,10 +96,11 @@ var TrumpCards = (function () {
             }
         }
         this.deckDrowFlagInit();
+        this.deckDrowCnt = 0;
     };
     ////////////////////////////////////////////////////////////////////////////////
-    ///	@brief			山札初期化
-    ///	@fn				private deckInit(): void
+    ///	@brief			山札ドローフラグ初期化
+    ///	@fn				private deckDrowFlagInit(): void
     ///	@return			ありません
     ///	@author			Yuta Yoshinaga
     ///	@date			2018.05.04
@@ -120,20 +121,34 @@ var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.shuffle = function () {
         this.deckDrowFlagInit();
-        var exec = 0;
         var deckLocal = new Array();
-        for (;;) {
-            var point = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
-            if (this.deck[point].getDrowFlag() == false) {
-                this.deck[point].setDrowFlag(true);
-                deckLocal[exec] = this.deck[point];
-                exec++;
+        for (var i = 0; i < DEF_CARD_CNT; i++) {
+            for (;;) {
+                var point = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
+                if (this.deck[point].getDrowFlag() == false) {
+                    this.deck[point].setDrowFlag(true);
+                    deckLocal[i] = this.deck[point];
+                    break;
+                }
             }
-            if ((DEF_CARD_CNT - 1) <= exec)
-                break;
         }
         this.deck = $.extend(true, [], deckLocal);
         this.deckDrowFlagInit();
+        this.deckDrowCnt = 0;
+    };
+    ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			山札配る
+    ///	@fn				public drowCard(): Card
+    ///	@return			カードクラス
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    TrumpCards.prototype.drowCard = function () {
+        var res = null;
+        if (this.deckDrowCnt < DEF_CARD_CNT)
+            res = this.deck[this.deckDrowCnt++];
+        return res;
     };
     return TrumpCards;
 }());

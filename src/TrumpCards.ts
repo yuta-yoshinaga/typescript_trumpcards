@@ -28,6 +28,7 @@ class TrumpCards
 {
 	private cards: Card[];										//!< カード
 	private deck: Card[];										//!< 山札
+	private deckDrowCnt: number;								//!< 山札配った枚数
 
 	////////////////////////////////////////////////////////////////////////////////
 	///	@brief			コンストラクタ
@@ -103,6 +104,7 @@ class TrumpCards
 			}
 		}
 		this.deckDrowFlagInit();
+		this.deckDrowCnt = 0;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -131,18 +133,34 @@ class TrumpCards
 	public shuffle(): void
 	{
 		this.deckDrowFlagInit();
-		var exec: number = 0;
 		var deckLocal = new Array();
-		for(;;){
-			var point: number = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
-			if(this.deck[point].getDrowFlag() == false){
-				this.deck[point].setDrowFlag(true);
-				deckLocal[exec] = this.deck[point];
-				exec++;
+		for(var i = 0; i < DEF_CARD_CNT; i++){
+			for(;;){
+				var point: number = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
+				if(this.deck[point].getDrowFlag() == false){
+					this.deck[point].setDrowFlag(true);
+					deckLocal[i] = this.deck[point];
+					break;
+				}
 			}
-			if((DEF_CARD_CNT - 1) <= exec) break;
 		}
 		this.deck = $.extend(true, [], deckLocal);
 		this.deckDrowFlagInit();
+		this.deckDrowCnt = 0;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///	@brief			山札配る
+	///	@fn				public drowCard(): Card
+	///	@return			カードクラス
+	///	@author			Yuta Yoshinaga
+	///	@date			2018.05.04
+	///
+	////////////////////////////////////////////////////////////////////////////////
+	public drowCard(): Card
+	{
+		var res: Card = null;
+		if(this.deckDrowCnt < DEF_CARD_CNT) res = this.deck[this.deckDrowCnt++];
+		return res;
 	}
 }

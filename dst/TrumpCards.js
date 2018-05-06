@@ -75,7 +75,7 @@ var TrumpCards = (function () {
             else {
                 // *** ジョーカー *** //
                 this.cards[i].setType(DEF_CARD_TYPE_JOKER);
-                this.cards[i].setValue(DEF_CARD_VALUE_JOKER);
+                this.cards[i].setValue((i - 52) + 1);
             }
         }
     };
@@ -89,16 +89,7 @@ var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.deckInit = function () {
         this.deck = new Array();
-        for (var i = 0; i < this.deckCnt; i++) {
-            for (;;) {
-                var point = Math.floor(Math.random() * (this.deckCnt - 1));
-                if (this.cards[point].getDrowFlag() == false) {
-                    this.cards[point].setDrowFlag(true);
-                    this.deck[i] = this.cards[point];
-                    break;
-                }
-            }
-        }
+        this.deck = $.extend(true, [], this.cards);
         this.deckDrowFlagInit();
         this.deckDrowCnt = 0;
     };
@@ -116,6 +107,25 @@ var TrumpCards = (function () {
         }
     };
     ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			山札シャッフルローカル
+    ///	@fn				private shuffleLocal(array: any): any
+    ///	@param[in]		array: any
+    ///	@return			シャッフル済み配列
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    TrumpCards.prototype.shuffleLocal = function (array) {
+        var n = array.length, t, i;
+        while (n) {
+            i = Math.floor(Math.random() * n--);
+            t = array[n];
+            array[n] = array[i];
+            array[i] = t;
+        }
+        return array;
+    };
+    ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			山札シャッフル
     ///	@fn				public shuffle(): void
     ///	@return			ありません
@@ -124,19 +134,7 @@ var TrumpCards = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.shuffle = function () {
-        this.deckDrowFlagInit();
-        var deckLocal = new Array();
-        for (var i = 0; i < this.deckCnt; i++) {
-            for (;;) {
-                var point = Math.floor(Math.random() * (this.deckCnt - 1));
-                if (this.deck[point].getDrowFlag() == false) {
-                    this.deck[point].setDrowFlag(true);
-                    deckLocal[i] = this.deck[point];
-                    break;
-                }
-            }
-        }
-        this.deck = $.extend(true, [], deckLocal);
+        this.deck = this.shuffleLocal(this.deck);
         this.deckDrowFlagInit();
         this.deckDrowCnt = 0;
     };
@@ -150,8 +148,10 @@ var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.drowCard = function () {
         var res = null;
-        if (this.deckDrowCnt < this.deckCnt)
+        if (this.deckDrowCnt < this.deckCnt) {
+            this.deck[this.deckDrowCnt].setDrowFlag(true);
             res = this.deck[this.deckDrowCnt++];
+        }
         return res;
     };
     ////////////////////////////////////////////////////////////////////////////////

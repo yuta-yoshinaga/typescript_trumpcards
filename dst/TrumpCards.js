@@ -25,13 +25,17 @@ var DEF_CARD_CNT = ((13 * 4) + 2);
 var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			コンストラクタ
-    ///	@fn				public constructor()
+    ///	@fn				public constructor(jokerFlag: boolean)
+    ///	@param[in]		jokerFlag: boolean		ジョーカー有効フラグ
     ///	@return			ありません
     ///	@author			Yuta Yoshinaga
     ///	@date			2018.05.04
     ///
     ////////////////////////////////////////////////////////////////////////////////
-    function TrumpCards() {
+    function TrumpCards(jokerFlag) {
+        this.deckCnt = DEF_CARD_CNT;
+        if (jokerFlag == false)
+            this.deckCnt -= 2;
         this.cardsInit();
         this.deckInit();
     }
@@ -45,7 +49,7 @@ var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.cardsInit = function () {
         this.cards = new Array();
-        for (var i = 0; i < DEF_CARD_CNT; i++) {
+        for (var i = 0; i < this.deckCnt; i++) {
             this.cards[i] = new Card();
             this.cards[i].setDrowFlag(false);
             if (0 <= i && i <= 12) {
@@ -85,9 +89,9 @@ var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.deckInit = function () {
         this.deck = new Array();
-        for (var i = 0; i < DEF_CARD_CNT; i++) {
+        for (var i = 0; i < this.deckCnt; i++) {
             for (;;) {
-                var point = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
+                var point = Math.floor(Math.random() * (this.deckCnt - 1));
                 if (this.cards[point].getDrowFlag() == false) {
                     this.cards[point].setDrowFlag(true);
                     this.deck[i] = this.cards[point];
@@ -107,7 +111,7 @@ var TrumpCards = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.deckDrowFlagInit = function () {
-        for (var i = 0; i < DEF_CARD_CNT; i++) {
+        for (var i = 0; i < this.deckCnt; i++) {
             this.deck[i].setDrowFlag(false);
         }
     };
@@ -122,9 +126,9 @@ var TrumpCards = (function () {
     TrumpCards.prototype.shuffle = function () {
         this.deckDrowFlagInit();
         var deckLocal = new Array();
-        for (var i = 0; i < DEF_CARD_CNT; i++) {
+        for (var i = 0; i < this.deckCnt; i++) {
             for (;;) {
-                var point = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
+                var point = Math.floor(Math.random() * (this.deckCnt - 1));
                 if (this.deck[point].getDrowFlag() == false) {
                     this.deck[point].setDrowFlag(true);
                     deckLocal[i] = this.deck[point];
@@ -146,9 +150,20 @@ var TrumpCards = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     TrumpCards.prototype.drowCard = function () {
         var res = null;
-        if (this.deckDrowCnt < DEF_CARD_CNT)
+        if (this.deckDrowCnt < this.deckCnt)
             res = this.deck[this.deckDrowCnt++];
         return res;
+    };
+    ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			ゲッター
+    ///	@fn				public getDeckDrowCnt(): number
+    ///	@return			山札配った枚数
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    TrumpCards.prototype.getDeckDrowCnt = function () {
+        return this.deckDrowCnt;
     };
     return TrumpCards;
 }());

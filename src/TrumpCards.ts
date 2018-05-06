@@ -29,17 +29,21 @@ class TrumpCards
 	private cards: Card[];										//!< カード
 	private deck: Card[];										//!< 山札
 	private deckDrowCnt: number;								//!< 山札配った枚数
+	private deckCnt: number;									//!< 山札枚数
 
 	////////////////////////////////////////////////////////////////////////////////
 	///	@brief			コンストラクタ
-	///	@fn				public constructor()
+	///	@fn				public constructor(jokerFlag: boolean)
+	///	@param[in]		jokerFlag: boolean		ジョーカー有効フラグ
 	///	@return			ありません
 	///	@author			Yuta Yoshinaga
 	///	@date			2018.05.04
 	///
 	////////////////////////////////////////////////////////////////////////////////
-	public constructor()
+	public constructor(jokerFlag: boolean)
 	{
+		this.deckCnt = DEF_CARD_CNT;
+		if(jokerFlag == false) this.deckCnt -= 2;
 		this.cardsInit();
 		this.deckInit();
 	}
@@ -55,7 +59,7 @@ class TrumpCards
 	private cardsInit(): void
 	{
 		this.cards = new Array();
-		for(var i = 0; i < DEF_CARD_CNT; i++){
+		for(var i = 0; i < this.deckCnt; i++){
 			this.cards[i] = new Card();
 			this.cards[i].setDrowFlag(false);
 			if(0 <= i && i <= 12){
@@ -93,9 +97,9 @@ class TrumpCards
 	private deckInit(): void
 	{
 		this.deck = new Array();
-		for(var i = 0; i < DEF_CARD_CNT; i++){
+		for(var i = 0; i < this.deckCnt; i++){
 			for(;;){
-				var point: number = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
+				var point: number = Math.floor(Math.random() * (this.deckCnt - 1));
 				if(this.cards[point].getDrowFlag() == false){
 					this.cards[point].setDrowFlag(true);
 					this.deck[i] = this.cards[point];
@@ -117,7 +121,7 @@ class TrumpCards
 	////////////////////////////////////////////////////////////////////////////////
 	private deckDrowFlagInit(): void
 	{
-		for(var i = 0; i < DEF_CARD_CNT; i++){
+		for(var i = 0; i < this.deckCnt; i++){
 			this.deck[i].setDrowFlag(false);
 		}
 	}
@@ -134,9 +138,9 @@ class TrumpCards
 	{
 		this.deckDrowFlagInit();
 		var deckLocal = new Array();
-		for(var i = 0; i < DEF_CARD_CNT; i++){
+		for(var i = 0; i < this.deckCnt; i++){
 			for(;;){
-				var point: number = Math.floor(Math.random() * (DEF_CARD_CNT - 1));
+				var point: number = Math.floor(Math.random() * (this.deckCnt - 1));
 				if(this.deck[point].getDrowFlag() == false){
 					this.deck[point].setDrowFlag(true);
 					deckLocal[i] = this.deck[point];
@@ -160,7 +164,20 @@ class TrumpCards
 	public drowCard(): Card
 	{
 		var res: Card = null;
-		if(this.deckDrowCnt < DEF_CARD_CNT) res = this.deck[this.deckDrowCnt++];
+		if(this.deckDrowCnt < this.deckCnt) res = this.deck[this.deckDrowCnt++];
 		return res;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///	@brief			ゲッター
+	///	@fn				public getDeckDrowCnt(): number
+	///	@return			山札配った枚数
+	///	@author			Yuta Yoshinaga
+	///	@date			2018.05.04
+	///
+	////////////////////////////////////////////////////////////////////////////////
+	public getDeckDrowCnt(): number
+	{
+		return this.deckDrowCnt;
 	}
 }

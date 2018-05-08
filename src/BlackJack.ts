@@ -163,11 +163,17 @@ class BlackJack
 				// *** 11～13 *** //
 				res += 10;
 			}else{
-				// *** エースは後ほど計算する *** //
-				aceFlag = true;
+				if(aceFlag){
+					// *** 2枚目のエースは強制的に1で換算する*** //
+					res += 1;
+				}else{
+					// *** エースは後ほど計算する *** //
+					aceFlag = true;
+				}
 			}
 		}
 		if(aceFlag){
+			// *** エース計算 *** //
 			var tmpScore1 = res + 1;
 			var tmpScore2 = res + 11;
 			var diff1 = 21 - tmpScore1;
@@ -194,43 +200,44 @@ class BlackJack
 	///	@brief			ゲーム勝敗判定
 	///	@fn				public gameJudgment(): boolean
 	///	@return			ゲーム勝敗判定
-	///					- true : プレイヤーの勝利
-	///					- false : プレイヤーの敗北
+	///					- 1 : プレイヤーの勝利
+	///					- 0 : 引き分け
+	///					- -1 : プレイヤーの敗北
 	///
 	///	@author			Yuta Yoshinaga
 	///	@date			2018.05.04
 	///
 	////////////////////////////////////////////////////////////////////////////////
-	public gameJudgment(): boolean
+	public gameJudgment(): number
 	{
-		var res: boolean = false;
+		var res: number = 0;
 		var score1: number = this.getScore(this.playerCards,this.playerCardsCnt);
 		var score2: number = this.getScore(this.dealerCards,this.dealerCardsCnt);
 		var diff1 = 21 - score1;
 		var diff2 = 21 - score2;
 		if(22 <= score1 && 22 <= score2){
 			// *** プレイヤー・ディーラー共にバーストしているので負け *** //
-			res = false;
+			res = -1;
 		}else if(22 <= score1 && score2 <= 21){
 			// *** プレイヤーバーストしているので負け *** //
-			res = false;
+			res = -1;
 		}else if(score1 <= 21 && 22 <= score2){
 			// *** ディーラーバーストしているので勝ち *** //
-			res = true;
+			res = 1;
 		}else{
 			if(diff1 == diff2){
-				// *** 同スコアならプレイヤーの負け *** //
-				res = false;
+				// *** 同スコアなら引き分け *** //
+				res = 0;
 				if(score1 == 21 && this.playerCardsCnt == 2 && this.dealerCardsCnt != 2){
 					// *** プレイヤーのみがピュアブラックジャックならプレイヤーの勝ち *** //
-					res = true;
+					res = 1;
 				}
 			}else if(diff1 < diff2){
 				// *** プレイヤーの方が21に近いので勝ち *** //
-				res = true;
+				res = 1;
 			}else{
 				// *** ディーラーの方が21に近いので負け *** //
-				res = false;
+				res = -1;
 			}
 		}
 		return res;

@@ -21,7 +21,7 @@ function setUi() {
     var dcc = blackJack.getDealerCardsCnt();
     var addEle = '<div>'
     addEle += '<div><p clsss="text-center">ディーラー手札</p>'
-    if(blackJack.getGameEndFlag()) addEle += '<p clsss="text-center">スコア ' + blackJack.getScore(dc,dcc) + '</p>'
+    addEle += '<p clsss="text-center">スコア ' + (blackJack.getGameEndFlag() ? blackJack.getScore(dc,dcc) : '') + '</p>'
     for(var i = 0; i < dcc; i++){
         if(i == 0 || blackJack.getGameEndFlag()){
             addEle += '<div class="col-xs-3"><image class="img-responsive" src="' + getImagePath(dc[i]) + '" /></div>';
@@ -44,8 +44,10 @@ function setUi() {
     $('.trumpcards_field').append(addEle);
 
     if(blackJack.getGameEndFlag()){
-        if(blackJack.gameJudgment()){
+        if(blackJack.gameJudgment() == 1){
             alert('あなたの勝ちです。');
+        }else if(blackJack.gameJudgment() == 0){
+            alert('引き分けです。');
         }else{
             alert('あなたの負けです。');
         }

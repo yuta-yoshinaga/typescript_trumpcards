@@ -31,6 +31,7 @@ class BlackJack
 	private dealerCards: Card[];								//!< ディーラーカード
 	private dealerCardsCnt: number;								//!< ディーラーカード枚数
 	private gameEndFlag: boolean;								//!< ゲーム終了フラグ
+	private theme: string;										//!< テーマ
 
 	////////////////////////////////////////////////////////////////////////////////
 	///	@brief			コンストラクタ
@@ -43,6 +44,7 @@ class BlackJack
 	public constructor()
 	{
 		this.trumpCards = new TrumpCards(false);
+		this.theme = 'Darkly';
 		this.gameInit();
 	}
 
@@ -306,5 +308,32 @@ class BlackJack
 	public getGameEndFlag(): boolean
 	{
 		return this.gameEndFlag;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///	@brief			セッター
+	///	@fn				public setTheme(theme: string): void
+	///	@param[in]		theme: string		テーマ
+	///	@return			ありません
+	///	@author			Yuta Yoshinaga
+	///	@date			2018.05.04
+	///
+	////////////////////////////////////////////////////////////////////////////////
+	public setTheme(theme: string): void
+	{
+		this.theme = theme;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///	@brief			ゲッター
+	///	@fn				public getTheme(): string
+	///	@return			テーマ
+	///	@author			Yuta Yoshinaga
+	///	@date			2018.05.04
+	///
+	////////////////////////////////////////////////////////////////////////////////
+	public getTheme(): string
+	{
+		return this.theme;
 	}
 }

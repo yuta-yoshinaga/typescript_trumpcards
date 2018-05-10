@@ -32,6 +32,7 @@ var BlackJack = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     function BlackJack() {
         this.trumpCards = new TrumpCards(false);
+        this.theme = 'Cerulean';
         this.gameInit();
     }
     ////////////////////////////////////////////////////////////////////////////////
@@ -286,6 +287,29 @@ var BlackJack = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.getGameEndFlag = function () {
         return this.gameEndFlag;
+    };
+    ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			セッター
+    ///	@fn				public setTheme(theme: string): void
+    ///	@param[in]		theme: string		テーマ
+    ///	@return			ありません
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    BlackJack.prototype.setTheme = function (theme) {
+        this.theme = theme;
+    };
+    ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			ゲッター
+    ///	@fn				public getTheme(): string
+    ///	@return			テーマ
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    BlackJack.prototype.getTheme = function () {
+        return this.theme;
     };
     return BlackJack;
 }());

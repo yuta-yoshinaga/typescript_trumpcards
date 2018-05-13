@@ -32,6 +32,8 @@ var BlackJack = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     function BlackJack() {
         this.trumpCards = new TrumpCards(0);
+        this.player = new Player();
+        this.dealer = new Player();
         this.theme = 'Darkly';
         this.gameInit();
     }
@@ -49,16 +51,18 @@ var BlackJack = (function () {
         for (var i = 0; i < DEF_SHUFFLE_CNT; i++) {
             this.trumpCards.shuffle();
         }
-        // *** プレイヤー・ディーラー手札初期化 *** //
-        this.playerCards = new Array();
-        this.playerCardsCnt = 0;
-        this.dealerCards = new Array();
-        this.dealerCardsCnt = 0;
+        // *** プレイヤー・ディーラー初期化 *** //
+        this.player.setCards(new Array());
+        this.player.setCardsCnt(0);
+        this.dealer.setCards(new Array());
+        this.dealer.setCardsCnt(0);
         // *** プレイヤー・ディーラー手札を2枚づつ配る *** //
-        this.playerCards[this.playerCardsCnt++] = this.trumpCards.drowCard();
-        this.dealerCards[this.dealerCardsCnt++] = this.trumpCards.drowCard();
-        this.playerCards[this.playerCardsCnt++] = this.trumpCards.drowCard();
-        this.dealerCards[this.dealerCardsCnt++] = this.trumpCards.drowCard();
+        for (var i = 0; i < 2; i++) {
+            this.player.getCards()[this.player.getCardsCnt()] = this.trumpCards.drowCard();
+            this.player.setCardsCnt(this.player.getCardsCnt() + 1);
+            this.dealer.getCards()[this.dealer.getCardsCnt()] = this.trumpCards.drowCard();
+            this.dealer.setCardsCnt(this.dealer.getCardsCnt() + 1);
+        }
     };
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			プレイヤーヒット
@@ -70,8 +74,9 @@ var BlackJack = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.playerHit = function () {
         if (this.gameEndFlag == false) {
-            this.playerCards[this.playerCardsCnt++] = this.trumpCards.drowCard();
-            var score = this.getScore(this.playerCards, this.playerCardsCnt);
+            this.player.getCards()[this.player.getCardsCnt()] = this.trumpCards.drowCard();
+            this.player.setCardsCnt(this.player.getCardsCnt() + 1);
+            var score = this.getScore(this.player.getCards(), this.player.getCardsCnt());
             if (22 <= score)
                 this.playerStand(); // バーストしたので強制終了
         }
@@ -97,11 +102,12 @@ var BlackJack = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.dealerHit = function () {
         for (;;) {
-            var score = this.getScore(this.dealerCards, this.dealerCardsCnt);
+            var score = this.getScore(this.dealer.getCards(), this.dealer.getCardsCnt());
             if (score < 17) {
                 // *** ディーラーは自分の手持ちのカードの合計が「17」以上になるまで	  *** //
                 // *** ヒットし続ける（カードを引き続ける）							*** //
-                this.dealerCards[this.dealerCardsCnt++] = this.trumpCards.drowCard();
+                this.dealer.getCards()[this.dealer.getCardsCnt()] = this.trumpCards.drowCard();
+                this.dealer.setCardsCnt(this.dealer.getCardsCnt() + 1);
             }
             else {
                 // *** ディーラーは自分の手持ちカードの合計が「17」以上になったら	  *** //
@@ -197,8 +203,8 @@ var BlackJack = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.gameJudgment = function () {
         var res = 0;
-        var score1 = this.getScore(this.playerCards, this.playerCardsCnt);
-        var score2 = this.getScore(this.dealerCards, this.dealerCardsCnt);
+        var score1 = this.getScore(this.player.getCards(), this.player.getCardsCnt());
+        var score2 = this.getScore(this.dealer.getCards(), this.dealer.getCardsCnt());
         var diff1 = 21 - score1;
         var diff2 = 21 - score2;
         if (22 <= score1 && 22 <= score2) {
@@ -217,7 +223,7 @@ var BlackJack = (function () {
             if (diff1 == diff2) {
                 // *** 同スコアなら引き分け *** //
                 res = 0;
-                if (score1 == 21 && this.playerCardsCnt == 2 && this.dealerCardsCnt != 2) {
+                if (score1 == 21 && this.player.getCardsCnt() == 2 && this.dealer.getCardsCnt() != 2) {
                     // *** プレイヤーのみがピュアブラックジャックならプレイヤーの勝ち *** //
                     res = 1;
                 }
@@ -242,7 +248,7 @@ var BlackJack = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.getPlayerCards = function () {
-        return this.playerCards;
+        return this.player.getCards();
     };
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			ゲッター
@@ -253,7 +259,7 @@ var BlackJack = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.getPlayerCardsCnt = function () {
-        return this.playerCardsCnt;
+        return this.player.getCardsCnt();
     };
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			ゲッター
@@ -264,7 +270,7 @@ var BlackJack = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.getDealerCards = function () {
-        return this.dealerCards;
+        return this.dealer.getCards();
     };
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			ゲッター
@@ -275,7 +281,7 @@ var BlackJack = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     BlackJack.prototype.getDealerCardsCnt = function () {
-        return this.dealerCardsCnt;
+        return this.dealer.getCardsCnt();
     };
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			ゲッター

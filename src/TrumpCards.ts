@@ -26,7 +26,6 @@ var DEF_CARD_CNT = (13 * 4);
 ////////////////////////////////////////////////////////////////////////////////
 class TrumpCards
 {
-	private cards: Card[];										//!< カード
 	private deck: Card[];										//!< 山札
 	private deckDrowCnt: number;								//!< 山札配った枚数
 	private deckCnt: number;									//!< 山札枚数
@@ -57,30 +56,30 @@ class TrumpCards
 	////////////////////////////////////////////////////////////////////////////////
 	private cardsInit(): void
 	{
-		this.cards = new Array();
+		this.deck = new Array();
 		for(var i = 0; i < this.deckCnt; i++){
-			this.cards[i] = new Card();
-			this.cards[i].setDrowFlag(false);
+			this.deck[i] = new Card();
+			this.deck[i].setDrowFlag(false);
 			if(0 <= i && i <= 12){
 				// *** スペード *** //
-				this.cards[i].setType(DEF_CARD_TYPE_SPADE);
-				this.cards[i].setValue(i + 1);
+				this.deck[i].setType(DEF_CARD_TYPE_SPADE);
+				this.deck[i].setValue(i + 1);
 			}else if(13 <= i && i <= 25){
 				// *** クローバー *** //
-				this.cards[i].setType(DEF_CARD_TYPE_CLOVER);
-				this.cards[i].setValue((i- 13) + 1);
+				this.deck[i].setType(DEF_CARD_TYPE_CLOVER);
+				this.deck[i].setValue((i- 13) + 1);
 			}else if(26 <= i && i <= 38){
 				// *** ハート *** //
-				this.cards[i].setType(DEF_CARD_TYPE_HEART);
-				this.cards[i].setValue((i - 26) + 1);
+				this.deck[i].setType(DEF_CARD_TYPE_HEART);
+				this.deck[i].setValue((i - 26) + 1);
 			}else if(39 <= i && i <= 51){
 				// *** ダイアモンド *** //
-				this.cards[i].setType(DEF_CARD_TYPE_DIAMOND);
-				this.cards[i].setValue((i - 39) + 1);
+				this.deck[i].setType(DEF_CARD_TYPE_DIAMOND);
+				this.deck[i].setValue((i - 39) + 1);
 			}else{
 				// *** ジョーカー *** //
-				this.cards[i].setType(DEF_CARD_TYPE_JOKER);
-				this.cards[i].setValue((i - 52) + 1);
+				this.deck[i].setType(DEF_CARD_TYPE_JOKER);
+				this.deck[i].setValue((i - 52) + 1);
 			}
 		}
 	}
@@ -95,8 +94,6 @@ class TrumpCards
 	////////////////////////////////////////////////////////////////////////////////
 	private deckInit(): void
 	{
-		this.deck = new Array();
-		this.deck = $.extend(true, [], this.cards);
 		this.deckDrowFlagInit();
 		this.deckDrowCnt = 0;
 	}

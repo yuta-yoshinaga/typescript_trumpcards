@@ -17,7 +17,7 @@
 /// <reference path="Card.ts" />
 /// <reference path="types/jquery/index.d.ts" />
 
-var DEF_CARD_CNT = ((13 * 4) + 2);
+var DEF_CARD_CNT = (13 * 4);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///	@class		TrumpCards
@@ -40,10 +40,9 @@ class TrumpCards
 	///	@date			2018.05.04
 	///
 	////////////////////////////////////////////////////////////////////////////////
-	public constructor(jokerFlag: boolean)
+	public constructor(jokerCnt: number)
 	{
-		this.deckCnt = DEF_CARD_CNT;
-		if(jokerFlag == false) this.deckCnt -= 2;
+		this.deckCnt = DEF_CARD_CNT + jokerCnt;
 		this.cardsInit();
 		this.deckInit();
 	}

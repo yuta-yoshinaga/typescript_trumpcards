@@ -31,8 +31,8 @@ var BlackJack = (function () {
     ///
     ////////////////////////////////////////////////////////////////////////////////
     function BlackJack() {
-        this.trumpCards = new TrumpCards(false);
-        this.theme = 'Cerulean';
+        this.trumpCards = new TrumpCards(0);
+        this.theme = 'Darkly';
         this.gameInit();
     }
     ////////////////////////////////////////////////////////////////////////////////

@@ -43,7 +43,7 @@ class BlackJack
 	////////////////////////////////////////////////////////////////////////////////
 	public constructor()
 	{
-		this.trumpCards = new TrumpCards(false);
+		this.trumpCards = new TrumpCards(0);
 		this.theme = 'Darkly';
 		this.gameInit();
 	}

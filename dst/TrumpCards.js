@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// <reference path="Card.ts" />
 /// <reference path="types/jquery/index.d.ts" />
-var DEF_CARD_CNT = ((13 * 4) + 2);
+var DEF_CARD_CNT = (13 * 4);
 ////////////////////////////////////////////////////////////////////////////////
 ///	@class		TrumpCards
 ///	@brief		トランプカードクラス
@@ -32,10 +32,8 @@ var TrumpCards = (function () {
     ///	@date			2018.05.04
     ///
     ////////////////////////////////////////////////////////////////////////////////
-    function TrumpCards(jokerFlag) {
-        this.deckCnt = DEF_CARD_CNT;
-        if (jokerFlag == false)
-            this.deckCnt -= 2;
+    function TrumpCards(jokerCnt) {
+        this.deckCnt = DEF_CARD_CNT + jokerCnt;
         this.cardsInit();
         this.deckInit();
     }

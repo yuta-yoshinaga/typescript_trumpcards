@@ -24,14 +24,16 @@ var DEF_SHUFFLE_CNT = 10;
 var OldMaid = (function () {
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			コンストラクタ
-    ///	@fn				public constructor()
+    ///	@fn				public constructor(playersCnt: number)
+    ///	@param[in]		playersCnt: number		プレイヤー数
     ///	@return			ありません
     ///	@author			Yuta Yoshinaga
     ///	@date			2018.05.04
     ///
     ////////////////////////////////////////////////////////////////////////////////
-    function OldMaid() {
-        this.trumpCards = new TrumpCards(0);
+    function OldMaid(playersCnt) {
+        this.trumpCards = new TrumpCards(1);
+        this.playersCnt = playersCnt;
         this.theme = 'Darkly';
         this.gameInit();
     }
@@ -49,6 +51,29 @@ var OldMaid = (function () {
         for (var i = 0; i < DEF_SHUFFLE_CNT; i++) {
             this.trumpCards.shuffle();
         }
+    };
+    ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			セッター
+    ///	@fn				public setPlayersCnt(playersCnt: number): void
+    ///	@param[in]		playersCnt: number		プレイヤー数
+    ///	@return			ありません
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    OldMaid.prototype.setPlayersCnt = function (playersCnt) {
+        this.playersCnt = playersCnt;
+    };
+    ////////////////////////////////////////////////////////////////////////////////
+    ///	@brief			ゲッター
+    ///	@fn				public getPlayersCnt(): number
+    ///	@return			プレイヤー数
+    ///	@author			Yuta Yoshinaga
+    ///	@date			2018.05.04
+    ///
+    ////////////////////////////////////////////////////////////////////////////////
+    OldMaid.prototype.getPlayersCnt = function () {
+        return this.playersCnt;
     };
     ////////////////////////////////////////////////////////////////////////////////
     ///	@brief			ゲッター

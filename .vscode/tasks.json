@@ -1,13 +1,25 @@
 {
-    "version": "0.1.0",
+    "version": "2.0.0",
     "command": "ntsc",
-    "isShellCommand": true,
-    "showOutput": "silent",
     "windows": {
         "command": "ntsc",
         "isShellCommand": true
     },
     "args": ["-p", "./src", "-outDir", "./dst"],
     //"args": ["--module commonjs","${file}"],
-    "problemMatcher": "$tsc"
+    "problemMatcher": "$tsc",
+    "tasks": [
+        {
+            "label": "ntsc",
+            "type": "shell",
+            "args": [
+                "-p",
+                "./src",
+                "-outDir",
+                "./dst"
+            ],
+            "problemMatcher": "$tsc",
+            "group": "build"
+        }
+    ]
 }
